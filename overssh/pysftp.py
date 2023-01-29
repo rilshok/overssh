@@ -14,10 +14,13 @@ from pysftp.helpers import known_hosts  # type: ignore
 
 from .aliases import PathLike
 from .auth import LikeSSHAuth, SSHAuth
+import io
+from typing import BinaryIO
 
 
 class PortHostKeys(HostKeys):
     """paramiko.hostkeys.HostKeys patch"""
+
     def __init__(self, filename: PathLike, port: int):
         self.port = port
         super().__init__(str(filename))
@@ -32,6 +35,7 @@ class PortHostKeys(HostKeys):
 
 class Connection(pysftp.Connection):
     """SFTP Connection into the specified hostname"""
+
     def __init__(self, authinfo: LikeSSHAuth):
         authinfo = SSHAuth.cast(authinfo)
         opts = None
@@ -66,3 +70,58 @@ class Connection(pysftp.Connection):
             self._tconnect["pkey"] = private_key
             return
         return super()._set_authentication(password, private_key, private_key_pass)
+
+
+def _assert_pysftp_connection(client):
+    if not isinstance(client, pysftp.Connection):
+        raise TypeError("pysftp.Connection was expected")
+
+
+@contextlib.contextmanager
+def sftp_open(client: pysftp.Connection, remotepath: PathLike, mode="rb"):
+    """Open the file via sftp connection and return the stream"""
+    _assert_pysftp_connection(client)
+    if mode != "rb":
+        raise ValueError("only the rb open mode is supported")
+    buffer = io.BytesIO()
+    try:
+        client.getfo(str(remotepath), buffer)
+        buffer.seek(0)
+        yield buffer
+    finally:
+        buffer.close()
+
+
+def sftp_download(
+    client: pysftp.Connection,
+    remotepath: PathLike,
+    localpath: PathLike,
+) -> None:
+    """Download file via sftp connection"""
+    _assert_pysftp_connection(client)
+    client.get(
+        remotepath=str(remotepath),
+        localpath=str(localpath),
+        preserve_mtime=False,
+    )
+
+
+def sftp_download_bytes(
+    client: pysftp.Connection,
+    remotepath: PathLike,
+) -> BinaryIO:
+    _assert_pysftp_connection(client)
+    buffer = io.BytesIO()
+    client.getfo(str(remotepath), buffer)
+    return io.BytesIO(buffer.getvalue())
+
+
+def sftp_upload_bytes(
+    client: pysftp.Connection,
+    data: BinaryIO,
+    remotepath: PathLike,
+    mode: str = "0640",  # FIXME
+) -> None:
+    data.seek(0)
+    client.putfo(data, str(remotepath), confirm=True)
+    client.chmod(str(remotepath), int(mode))
