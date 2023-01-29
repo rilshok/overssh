@@ -3,16 +3,16 @@
 import runpy
 from pathlib import Path
 
-from setuptools import find_packages, setup #type: ignore
+from setuptools import find_packages, setup  # type: ignore
 
 NAME = "overssh"
 DESCRIPTION = "<PROJECT_DESCRIPTION>"
 LICENSE = "MIT"
 AUTHOR = "Vladislav A. Proskurov"
 AUTHOR_EMAIL = "rilshok@pm.me"
-URL = f"<AUTHOR_GITHUB>/{NAME}"
+URL = "https://github.com/rilshok/overssh"
 CLASSIFIERS = [
-    "Programming Language :: Python :: 3.6",
+    "Programming Language :: Python :: 3.9",
     "License :: OSI Approved :: MIT License",
     "Operating System :: OS Independent",
     "Development Status :: 1 - Planning",
@@ -42,5 +42,5 @@ setup(
     zip_safe=False,
     install_requires=REQUIREMENTS,
     classifiers=CLASSIFIERS,
-    python_requires=">=3.6",
+    python_requires=">=3.9",
 )
