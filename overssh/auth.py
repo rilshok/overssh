@@ -1,14 +1,24 @@
+"""Credentials for connecting to hosts"""
+
+__all__ = (
+    "LikeSSHAuth",
+    "SSHAuth",
+)
+
 from pathlib import Path
 from typing import AnyStr, Mapping, NamedTuple, Optional, Union
 
 import paramiko  # type: ignore
-from paramiko.config import SSH_PORT
+from paramiko.config import SSH_PORT  # type: ignore
+
+from .aliases import PathLike
 
 LikeSSHAuth = Union["SSHAuth", AnyStr, Mapping]
-PathLike = Union[str, Path]
 
 
 class SSHAuth(NamedTuple):
+    """SSH connection credentials"""
+
     hostaddr: str
     hostport: int = SSH_PORT
     hostname: Optional[str] = None
@@ -19,6 +29,7 @@ class SSHAuth(NamedTuple):
 
     @property
     def socket(self):
+        """hostaddr[:port]"""
         return (
             f"{self.hostaddr}:{self.hostport}"
             if self.hostport != SSH_PORT
@@ -27,6 +38,7 @@ class SSHAuth(NamedTuple):
 
     @property
     def destination(self):
+        """[username@]hostaddr[:port]"""
         return f"{self.username}@{self.socket}" if self.username else self.socket
 
     def __str__(self) -> str:
@@ -36,13 +48,16 @@ class SSHAuth(NamedTuple):
         return f"SSHAuth[{str(self)}]"
 
     def enter_password(self, password: str) -> "SSHAuth":
+        """Remember the user password used when connecting to the server"""
         return self._replace(password=password)
 
     def enter_identity_password(self, password: str) -> "SSHAuth":
+        """Remember the password to use the identity file"""
         return self._replace(identity_password=password)
 
     @staticmethod
     def from_file(hostname: str, path: Optional[PathLike] = None) -> "SSHAuth":
+        """Using the host specified in the SSH Config File ("~/.ssh/config)"""
         config_path = Path(path or "~/.ssh/config").expanduser()
         sshconfig = paramiko.SSHConfig.from_path(str(config_path))
         if hostname not in sshconfig.get_hostnames():
@@ -63,6 +78,7 @@ class SSHAuth(NamedTuple):
 
     @staticmethod
     def cast(auth: LikeSSHAuth) -> "SSHAuth":
+        """Trying to use anything as a host configuration"""
         if isinstance(auth, SSHAuth):
             return auth
         if isinstance(auth, str):
