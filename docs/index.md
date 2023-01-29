@@ -1,15 +1,15 @@
-# <PROJECT_NAME>
+# overssh
 
 ## Installation
 
 ```bash
-pip install <PROJECT_NAME>
+pip install overssh
 ```
 
 Or from GitHub
 
 ```bash
-git clone git@github.com:<AUTHOR_NICKNAME>/<PROJECT_NAME>.git
+git clone git@github.com:rilshok/overssh.git
 cd redast
 pip install -e .
 ```
@@ -17,5 +17,5 @@ pip install -e .
 or
 
 ```bash
-pip install git+<AUTHOR_GITHUB>/<PROJECT_NAME>.git
+pip install git+https://github.com/rilshok/overssh.git
 ```

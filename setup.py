@@ -5,11 +5,11 @@ from pathlib import Path
 
 from setuptools import find_packages, setup #type: ignore
 
-NAME = "<PROJECT_NAME>"
+NAME = "overssh"
 DESCRIPTION = "<PROJECT_DESCRIPTION>"
 LICENSE = "MIT"
-AUTHOR = "<AUTHOR_NAME>"
-AUTHOR_EMAIL = "<AUTHOR_EMAIL>"
+AUTHOR = "Vladislav A. Proskurov"
+AUTHOR_EMAIL = "rilshok@pm.me"
 URL = f"<AUTHOR_GITHUB>/{NAME}"
 CLASSIFIERS = [
     "Programming Language :: Python :: 3.6",

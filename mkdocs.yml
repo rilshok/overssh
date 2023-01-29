@@ -1,9 +1,9 @@
-site_name: <PROJECT_NAME>
-site_description: <PROJECT_DESCRIPTION>
-site_url: https://<AUTHOR_NICKNAME>.github.io/<PROJECT_NAME>
-repo_url: <AUTHOR_GITHUB>/<PROJECT_NAME>
-repo_name: "<AUTHOR_NICKNAME>/<PROJECT_NAME>"
-watch: [<PROJECT_NAME>]
+site_name: overssh
+site_description: DESCRIPTION
+site_url: https://rilshok.github.io/overssh
+repo_url: https://github.com/rilshok/overssh
+repo_name: "rilshok/overssh"
+watch: [overssh]
 
 markdown_extensions:
   - admonition
