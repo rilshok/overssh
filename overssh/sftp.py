@@ -1,3 +1,11 @@
+__all__ = (
+    "SFTPConnection",
+    "sftp_open",
+    "sftp_download",
+    "sftp_download_bytes",
+    "sftp_upload_bytes",
+)
+
 import contextlib
 from pathlib import Path
 
@@ -33,7 +41,7 @@ class PortHostKeys(HostKeys):
         return super()._hostname_matches(hostname, entry)
 
 
-class Connection(pysftp.Connection):
+class SFTPConnection(pysftp.Connection):
     """SFTP Connection into the specified hostname"""
 
     def __init__(self, authinfo: LikeSSHAuth):

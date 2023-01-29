@@ -1,7 +1,6 @@
 """Credentials for connecting to hosts"""
 
 __all__ = (
-    "LikeSSHAuth",
     "SSHAuth",
 )
 
@@ -42,7 +41,7 @@ class SSHAuth(NamedTuple):
         return f"{self.username}@{self.socket}" if self.username else self.socket
 
     def __str__(self) -> str:
-        return self.hostname or self.hostaddr
+        return self.hostname or self.socket
 
     def __repr__(self) -> str:
         return f"SSHAuth[{str(self)}]"
