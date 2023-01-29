@@ -1,0 +1,10 @@
+PROJECT_NAME: project
+PROJECT_DESCRIPTION: project description
+
+
+AUTHOR_NICKNAME: johndoe
+AUTHOR_NAME: John Doe
+AUTHOR_EMAIL: author@email.com
+AUTHOR_GITHUB: https://github.com/johndoe
+
+YEAR: "2022"
